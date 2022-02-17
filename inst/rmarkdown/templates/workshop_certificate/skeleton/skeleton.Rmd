@@ -1,0 +1,104 @@
+---
+title: "CERTIFICATE OF COMPLETION"
+output: 
+    pdf_document: 
+        latex_engine: xelatex
+        template: template.tex
+        keep_tex: true
+documentclass: extarticle        
+fontsize: 14pt
+params:
+  papersize:
+    label: Paper size of output PDF
+    value: a4paper
+    input: text    
+  date: 
+    label: Date of workshop
+    value: !r lubridate::today() 
+    input: date
+  location:
+    label: Location of workshop
+    value: University of Lorraine
+    input: text
+  workshop:
+    label: Workshop title
+    value: R Package Development Workshop
+    input: text
+  curriculum:
+    label: path to curriculum
+    value: !r system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "fwdbrand")
+    input: text
+  certifier:
+    label: Certifying person full name
+    value: Heather Turner
+  credentials:
+    label: Certifying person credentials
+    value: Workshop Tutor, Forwards Teaching Team Member
+    input: text
+  attendee:
+    label: Attendee
+    value: Maëlle Salmon
+    input: text
+---
+
+---
+classoption: "`r params$papersize`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      warning = FALSE, 
+                      fig.align = "center")
+```
+
+\begin{center}
+
+\Large \textbf{
+```{r, results = 'asis'}
+# thanks so much https://stackoverflow.com/questions/46226364/passing-parameters-in-rmarkdown-to-the-text-or-headings
+cat(params$attendee)
+```
+}
+
+\vspace{1.3cm}
+
+\normalsize
+has participated in the
+
+\vspace{0.8cm}
+
+\Large \textbf{
+```{r, results = 'asis'}
+cat(as.character(params$workshop), "\n")
+```
+}
+\normalsize
+
+\large \textbf{
+```{r, results = 'asis'}
+cat(as.character(params$date), ", ", params$location, "\n", sep = "")
+```
+}
+
+\vspace{0.5cm}
+
+\Large \textbf{
+Workshop contents:}
+
+\normalsize
+\begin{varwidth}{0.8\textwidth}
+```{r, results = 'asis', child = params$curriculum}
+
+```
+
+\end{varwidth}
+
+\vfill
+
+\rule[0in]{3in}{1pt}\\
+\textbf{`r params$certifier`\\
+        `r params$credentials`}\\
+\vspace{0.8cm}
+
+\end{center}

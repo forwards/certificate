@@ -1,0 +1,24 @@
+Package: certificate
+Version: 0.0.1
+Title: Create Attendance Certificates for R Workshops
+Description: Create PDF attendance certificates for participants of an R workshop, given input data with names, course syllabus, etc.
+Authors@R: c(person("Heather", "Turner", role = c("aut", "cre"),
+                    email = "ht@heatherturner.net"),
+             person("Maëlle", "Salmon", role = "aut",
+                    email = "maelle.salmon@yahoo.se"),
+             person("Paul", "Murrell", role = "ctb"))
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+License: GPL-3 + file LICENSE
+RoxygenNote: 7.1.0
+Imports: 
+    snakecase,
+    purrr,
+    stringr,
+    rmarkdown,
+    lubridate
+Suggests: 
+    testthat,
+    covr,
+    pdftools

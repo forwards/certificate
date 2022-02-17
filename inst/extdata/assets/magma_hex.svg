@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="792px" height="792px" viewBox="0 0 792 792" enable-background="new 0 0 792 792" xml:space="preserve">
+<g>
+
+	<!-- hexagon background -->
+	 <linearGradient id="SVGID_1_" x1="0.5" x2="0.5" y1="0" y2="1" gradientUnits="objectBoundingBox" spreadMethod="pad">
+	 <stop offset="0" stop-color="rgb(252,253,191)" stop-opacity="1"/>
+	 <stop offset="0.11" stop-color="rgb(254,201,141)" stop-opacity="1"/>
+	 <stop offset="0.22" stop-color="rgb(253,149,103)" stop-opacity="1"/>
+	 <stop offset="0.33" stop-color="rgb(241,96,93)" stop-opacity="1"/>
+	 <stop offset="0.44" stop-color="rgb(205,64,113)" stop-opacity="1"/>
+	 <stop offset="0.56" stop-color="rgb(159,47,127)" stop-opacity="1"/>
+	 <stop offset="0.67" stop-color="rgb(114,31,129)" stop-opacity="1"/>
+	 <stop offset="0.78" stop-color="rgb(69,16,119)" stop-opacity="1"/>
+	 <stop offset="0.89" stop-color="rgb(24,15,62)" stop-opacity="1"/>
+   <stop offset="1" stop-color="rgb(0,0,4)" stop-opacity="1"/>
+   </linearGradient>
+	<polygon fill="url(#SVGID_1_)" points="540,312.855 396,229.711 252,312.855 252,479.145 396,562.289 540,479.145"/>
+
+</g>
+</svg>
