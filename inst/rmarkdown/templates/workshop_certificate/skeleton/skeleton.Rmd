@@ -1,5 +1,4 @@
 ---
-title: "CERTIFICATE OF COMPLETION"
 output: 
     pdf_document: 
         latex_engine: xelatex
@@ -8,10 +7,22 @@ output:
 documentclass: extarticle        
 fontsize: 14pt
 params:
-  papersize:
-    label: Paper size of output PDF
-    value: a4paper
-    input: text    
+  title: 
+    label: Title for certificate
+    value: "CERTIFICATE OF COMPLETION"
+    input: text
+  attendee:
+    label: Attendee
+    value: Maëlle Salmon
+    input: text
+  action_text: 
+    label: Action text between name and workshop title.
+    value: "participated in the"
+    input: text
+  workshop:
+    label: Workshop title
+    value: R Package Development Workshop
+    input: text
   date: 
     label: Date of workshop
     value: !r lubridate::today() 
@@ -20,13 +31,17 @@ params:
     label: Location of workshop
     value: University of Lorraine
     input: text
-  workshop:
-    label: Workshop title
-    value: R Package Development Workshop
+  curriculum_title:
+    lable: Header before curriculum content
+    value: "Workshop contents:"
     input: text
   curriculum:
-    label: path to curriculum
-    value: !r system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "fwdbrand")
+    lable: Curriculum content
+    value: ""
+    input: text
+  curriculum_file:
+    label: Path to file containing curriculum content
+    value: !r system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "certificate")
     input: text
   certifier:
     label: Certifying person full name
@@ -35,14 +50,29 @@ params:
     label: Certifying person credentials
     value: Workshop Tutor, Forwards Teaching Team Member
     input: text
-  attendee:
-    label: Attendee
-    value: Maëlle Salmon
+  organization:
+    label: Decription of the organization running the workshops
+    value: Forwards, the R Foundation taskforce on women and other under-represented groups
     input: text
+  organization_url:
+    label: Organization URL without https://
+    value: forwards.github.io/
+    input: text
+  border_image:
+    label: Whether "border.png" exists
+    value: FALSE
+    input: logical
+  papersize:
+    label: Paper size of output PDF
+    value: a4paper
+    input: text    
 ---
 
 ---
+title: "`r params$title`"
 classoption: "`r params$papersize`"
+organization: "`r params$organization`"
+organization_url: "`r params$organization_url`"
 ---
 
 ```{r setup, include=FALSE}
@@ -64,7 +94,9 @@ cat(params$attendee)
 \vspace{1.3cm}
 
 \normalsize
-has participated in the
+```{r, results = 'asis'}
+cat(as.character(params$action_text), "\n")
+```
 
 \vspace{0.8cm}
 
@@ -84,12 +116,17 @@ cat(as.character(params$date), ", ", params$location, "\n", sep = "")
 \vspace{0.5cm}
 
 \Large \textbf{
-Workshop contents:}
+```{r, results = 'asis'}
+cat(params$curriculum_title, "\n", sep = "")
+```
+}
 
 \normalsize
 \begin{varwidth}{0.8\textwidth}
-```{r, results = 'asis', child = params$curriculum}
-
+```{r, results = 'asis'}
+if (!is.null(params$curriculum_file)) {
+  cat(readLines(params$curriculum_file), sep = "\n")
+} else cat(params$curriculum, "\n", sep = "\n\n")
 ```
 
 \end{varwidth}

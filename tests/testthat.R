@@ -1,4 +1,4 @@
 library(testthat)
-library(fwdbrand)
+library(certificate)
 
-test_check("fwdbrand")
+test_check("certificate")

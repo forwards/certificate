@@ -4,7 +4,7 @@
 
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={CERTIFICATE OF COMPLETION},
+            pdftitle={$title$},
             pdfborder={0 0 0},
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
@@ -22,7 +22,7 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{CERTIFICATE OF COMPLETION}
+  \title{$title$}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
     \author{}
@@ -32,7 +32,7 @@
 
 % customisations
 
-\usepackage[margin=1in,includeheadfoot,headsep=0in,headheight=0in,footskip=16.2pt]{geometry} % footskip must be min 16.11801pt
+\usepackage[margin=1in,includeheadfoot,headsep=0in,headheight=0in,footskip=17pt]{geometry} % footskip must be min 16.11801pt
 \usepackage{graphicx,grffile}
 \usepackage{mathspec}
 \usepackage{fontspec}
@@ -44,12 +44,17 @@
 \usepackage{tcolorbox}
 \usepackage{background}
 \tcbuselibrary{skins} % needed for border image (enhanced box type)
+\definecolor{Rblue}{HTML}{2369bd}
 \backgroundsetup{contents={
   \begin{tcolorbox}[
     enhanced,                   % box type
     colback=white,              % can't be transparent (else see frame image)
-    frame style image=magma_border.pdf, % image behind interior box
-    watermark graphics=partly_transparent_forwards.png, % (on top of colback)
+    $if(params.border_image)$
+    frame style image=border.pdf, % image behind interior box
+    $else$
+    colframe=Rblue, % colour if image does not exist
+    $endif$
+    watermark graphics=watermark.png, % (on top of colback)
     watermark zoom=0.9,         % zoom relative to interior of box
     outer arc=0mm, arc=0mm,     % square corners
     boxrule=8pt,                % border thickness
@@ -65,7 +70,7 @@
   \renewcommand{\headrulewidth}{0pt}
   \renewcommand{\footrulewidth}{0pt}
   \fancyfoot[CO]{
-    \opensans Forwards, the R Foundation taskforce on women and other under-represented groups: \href{https://forwards.github.io/}{\nolinkurl{forwards.github.io/}}}}
+    \opensans $organization$ \href{https://$organization_url$}{\nolinkurl{$organization_url$}}}}% https:// in variable causes compilation issues
 
 \begin{document}
 
