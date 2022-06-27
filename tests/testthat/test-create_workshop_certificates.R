@@ -3,17 +3,22 @@ context("test-create_workshop_certificates.R")
 test_that("create_workshop_certificates works", {
     skip_on_cran()
     attendees <- c("Marnie Dickinson", "Dr. Marlin Wilderman")
+    workshop <- "Package development workshop"
     date <- structure(17532, class = "Date")
     location <- "University of Barcelona"
-    workshop <- "Package development workshop"
-    curriculum <- system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "fwdbrand")
+    curriculum <- system.file("rmarkdown", "templates", "workshop_certificate",
+                              "resources", "default_workshop_contents.md",
+                              package = "certificate")
     certifier <- "Zaire Crooks"
     credentials <- "Forwards teaching team member"
+    organization <- "Forwards, the R Foundation taskforce for women and other
+    under-represented groups"
+    organization_url <- "forwards.github.io/"
     dir <- "certificates"
-    create_workshop_certificates(date, location,
-                                 workshop, curriculum, certifier,
-                                 credentials,
-                                 attendees,
+    create_workshop_certificates(attendees,
+                                 workshop, date, location,
+                                 curriculum, certifier, credentials,
+                                 organization, organization_url,
                                  dir)
     expect_true(file.exists(file.path(dir,
                                       "package_development_workshop_01.pdf")))
@@ -33,9 +38,10 @@ test_that("create_workshop_certificates works", {
     unlink(dir, recursive = TRUE)
 
     dir <- "certificates"
-    create_workshop_certificates(date, location, workshop, curriculum, certifier,
-                                 credentials,
-                                 attendees,
+    create_workshop_certificates(attendees,
+                                 workshop, date, location,
+                                 curriculum, certifier, credentials,
+                                 organization, organization_url,
                                  dir, keep_tex = TRUE)
     expect_true(file.exists(file.path(dir,
                                       "package_development_workshop_01.tex")))

@@ -36,13 +36,9 @@ params:
     value: "Workshop contents:"
     input: text
   curriculum:
-    lable: Curriculum content
-    value: ""
-    input: text
-  curriculum_file:
     label: Path to file containing curriculum content
     value: !r system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "certificate")
-    input: text
+    input: file
   certifier:
     label: Certifying person full name
     value: Heather Turner
@@ -59,9 +55,9 @@ params:
     value: forwards.github.io/
     input: text
   border_image:
-    label: Whether "border.png" exists
-    value: FALSE
-    input: logical
+    label: Path to file containing border image
+    value: !r system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "certificate")
+    input: text
   papersize:
     label: Paper size of output PDF
     value: a4paper
@@ -71,8 +67,9 @@ params:
 ---
 title: "`r params$title`"
 classoption: "`r params$papersize`"
-organization: "`r params$organization`"
+organization: "`r gsub("[\r\n]", " ", params$organization)`"
 organization_url: "`r params$organization_url`"
+border_image: "`r 'true'[params$border_image]`"
 ---
 
 ```{r setup, include=FALSE}
@@ -85,7 +82,7 @@ knitr::opts_chunk$set(echo = FALSE,
 \begin{center}
 
 \Large \textbf{
-```{r, results = 'asis'}
+```{r attendee, results = 'asis'}
 # thanks so much https://stackoverflow.com/questions/46226364/passing-parameters-in-rmarkdown-to-the-text-or-headings
 cat(params$attendee)
 ```
@@ -94,21 +91,21 @@ cat(params$attendee)
 \vspace{1.3cm}
 
 \normalsize
-```{r, results = 'asis'}
+```{r action_text, results = 'asis'}
 cat(as.character(params$action_text), "\n")
 ```
 
 \vspace{0.8cm}
 
 \Large \textbf{
-```{r, results = 'asis'}
+```{r workshop, results = 'asis'}
 cat(as.character(params$workshop), "\n")
 ```
 }
 \normalsize
 
 \large \textbf{
-```{r, results = 'asis'}
+```{r location, results = 'asis'}
 cat(as.character(params$date), ", ", params$location, "\n", sep = "")
 ```
 }
@@ -116,17 +113,17 @@ cat(as.character(params$date), ", ", params$location, "\n", sep = "")
 \vspace{0.5cm}
 
 \Large \textbf{
-```{r, results = 'asis'}
+```{r curriculum_title, results = 'asis'}
 cat(params$curriculum_title, "\n", sep = "")
 ```
 }
 
+\vspace{0.5cm}
+
 \normalsize
 \begin{varwidth}{0.8\textwidth}
-```{r, results = 'asis'}
-if (!is.null(params$curriculum_file)) {
-  cat(readLines(params$curriculum_file), sep = "\n")
-} else cat(params$curriculum, "\n", sep = "\n\n")
+```{r curriculum, results = 'asis'}
+cat(readLines(params$curriculum), sep = "\n\n")
 ```
 
 \end{varwidth}

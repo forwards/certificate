@@ -1,23 +1,26 @@
 #' Create certificates for all attendees
 #'
-#' @param title Title for certificate.
 #' @param attendees Names of attendees, character vector.
-#' @param action_text Action text between name and workshop title.
 #' @param workshop Workshop title, character.
 #' @param date Date of the workshop, as a date.
 #' @param location Location of the workshop, character.
-#' @param curriculum_title Header before curriculum content.
-#' @param curriculum Text string describing the workshop curriculum.
-#' @param curriculum_file Path to the workshop curriculum (.md), character.
+#' @param curriculum Path to the workshop curriculum (.md), character.
 #' @param certifier Person certifying, character.
 #' @param credentials Credentials of the certifying person, character.
-#' @param organization Decription of the organization running the workshops.
+#' @param organization Description of the organization running the workshops.
 #' @param organization_url URL of the organization website, without https://.
-#' @param logo Specify the logo to use for the watermark, either `"R"`
+#' @param dir Directory where to output the pdf certificates, character.
+#' @param title Title for certificate.
+#' @param action_text Action text between name and workshop title.
+#' @param curriculum_title Header before curriculum content.
+#' @param logo Specify the logo to use for the watermark, as a path to a logo
+#' file or the name of a logo included in the package: either `"R"`
 #' (default), or `"Forwards"`.
+#' @param border_image Specify the image to use to create a border, as a path
+#' to an image file. Defaults are used for the included logos: plain blue for
+#' `logo = R` and a magma colour scale for `logo = "Forwards"`.
 #' @param papersize Option for LaTeX article class specifying paper size, e.g.
 #' `"a4paper"`, `"letterpaper"`.
-#' @param dir Directory where to output the pdf certificates, character.
 #' @param keep_tex Logical argument passed to rmarkdown::render.
 #'
 #' @export
@@ -26,32 +29,34 @@
 #' \dontrun{
 #' # Fake names generated via charlatan::ch_name
 #' attendees <- c("Marnie Dickinson", "Dr. Marlin Wilderman")
+#' workshop <- "Package development workshop"
 #' date <- as.Date("2018-01-01")
 #' location <- "University of Lorraine"
-#' workshop <- "Package development workshop"
 #' curriculum <- system.file("rmarkdown", "templates",
 #' "workshop_certificate", "resources",
 #' "default_workshop_contents.md", package = "certificate")
 #' certifier <- "Zaire Crooks"
 #' credentials <- "Forwards teaching team member"
+#' organization <- "Forwards, the R Foundation taskforce for women and other
+#' under-represented groups"
+#' organization_url <- "forwards.github.io/"
 #' dir <- "certificates"
-#' create_workshop_certificates(date, location, workshop, curriculum,
-#'  certifier,
-#' credentials,
-#' attendees,
-#' dir)
+#' create_workshop_certificates(attendees, workshop, date, location,
+#'                              curriculum, certifier, credentials,
+#'                              organization, organization_url,
+#'                              dir)
 #' }
-create_workshop_certificates <- function(title = "CERTIFICATE OF COMPLETION",
-                                         attendees,
-                                         action_text = "participated in the",
+create_workshop_certificates <- function(attendees,
                                          workshop, date, location,
+                                         curriculum, certifier, credentials,
+                                         organization, organization_url,
+                                         dir = ".",
+                                         title = "CERTIFICATE OF COMPLETION",
+                                         action_text = "participated in the",
                                          curriculum_title = "Workshop contents:",
-                                         curriculum, curriculum_file = NULL,
-                                         certifier, credentials,
-                                         organization = "R Contribution Working Group\n",
-                                         organization_url = "contributor.r-project.org",
-                                         logo = "R", papersize = "a4paper",
-                                         dir = ".", keep_tex = FALSE){
+                                         logo = "R", border_image = NULL,
+                                         papersize = "a4paper",
+                                         keep_tex = FALSE){
 
     if(!dir.exists(dir)){
         dir.create(dir)
@@ -63,17 +68,25 @@ create_workshop_certificates <- function(title = "CERTIFICATE OF COMPLETION",
     temp_template <- copy_skeleton_file("template.tex", dir)
     on.exit(file.remove(temp_template), add = TRUE)
 
-    logo <- match.arg(logo, c("R", "Forwards"))
-    logo_file <- switch(logo,
-                        "Forwards" = "partly_transparent_forwards.png",
-                        "Rlogo_50_percent_opacity.png")
-    temp_logo <- copy_asset_file(logo_file, "watermark.png", dir)
+    if (!logo %in% c("R", "Forwards")) {
+       temp_logo <- file.path(dir, "watermark.png")
+       file.copy(logo, temp_logo)
+    } else {
+        logo_file <- switch(logo,
+                            "Forwards" = "partly_transparent_forwards.png",
+                            "Rlogo_50_percent_opacity.png")
+        temp_logo <- copy_asset_file(logo_file, "watermark.png", dir)
+    }
     on.exit(file.remove(temp_logo), add = TRUE)
 
-    if (logo == "Forwards"){
+    if (!is.null(border_image)){
+        temp_border <- file.path(dir, "border.pdf")
+        file.copy(border_image, temp_border)
+        on.exit(file.remove(temp_border), add = TRUE)
+    } else if (logo == "Forwards"){
         temp_border <- copy_asset_file("magma_border.pdf", "border.pdf", dir)
         on.exit(file.remove(temp_border), add = TRUE)
-    }
+    } else temp_border <- NULL
 
     purrr::walk2(attendees, 1:length(attendees),
                  create_workshop_certificate,
@@ -82,11 +95,11 @@ create_workshop_certificates <- function(title = "CERTIFICATE OF COMPLETION",
                  workshop, date, location,
                  curriculum_title = curriculum_title,
                  curriculum,
-                 curriculum_file = curriculum_file,
                  certifier, credentials,
                  organization = organization,
                  organization_url = organization_url,
-                 logo == "Forwards", papersize, dir,
+                 border_image = temp_border,
+                 papersize, dir,
                  keep_tex)
 }
 
@@ -96,11 +109,11 @@ create_workshop_certificate <- function(attendee, number,
                                         action_text = "participated in the",
                                         workshop, date, location,
                                         curriculum_title = "Workshop contents:",
-                                        curriculum, curriculum_file = NULL,
+                                        curriculum,
                                         certifier, credentials,
                                         organization = "R Contribution Working Group\n",
                                         organization_url = "contributor.r-project.org",
-                                        border_image = FALSE,
+                                        border_image = NULL,
                                         papersize = "a4paper", dir = ".",
                                         keep_tex = FALSE){
     i <- stringr::str_pad(number, 2, pad = "0")
@@ -116,7 +129,6 @@ create_workshop_certificate <- function(attendee, number,
                                     location = location,
                                     curriculum_title = curriculum_title,
                                     curriculum = curriculum,
-                                    curriculum_file = curriculum_file,
                                     certifier = certifier,
                                     credentials = credentials,
                                     organization = organization,

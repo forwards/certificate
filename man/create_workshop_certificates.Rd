@@ -4,16 +4,34 @@
 \alias{create_workshop_certificates}
 \title{Create certificates for all attendees}
 \usage{
-create_workshop_certificates(date, location, workshop, curriculum,
-  certifier, credentials, attendees, dir = ".", papersize = "a4paper",
-  keep_tex = FALSE)
+create_workshop_certificates(
+  attendees,
+  workshop,
+  date,
+  location,
+  curriculum,
+  certifier,
+  credentials,
+  organization,
+  organization_url,
+  dir = ".",
+  title = "CERTIFICATE OF COMPLETION",
+  action_text = "participated in the",
+  curriculum_title = "Workshop contents:",
+  logo = "R",
+  border_image = NULL,
+  papersize = "a4paper",
+  keep_tex = FALSE
+)
 }
 \arguments{
+\item{attendees}{Names of attendees, character vector.}
+
+\item{workshop}{Workshop title, character.}
+
 \item{date}{Date of the workshop, as a date.}
 
 \item{location}{Location of the workshop, character.}
-
-\item{workshop}{Workshop title, character.}
 
 \item{curriculum}{Path to the workshop curriculum (.md), character.}
 
@@ -21,14 +39,30 @@ create_workshop_certificates(date, location, workshop, curriculum,
 
 \item{credentials}{Credentials of the certifying person, character.}
 
-\item{attendees}{Names of attendees, character vector.}
+\item{organization}{Description of the organization running the workshops.}
+
+\item{organization_url}{URL of the organization website, without https://.}
 
 \item{dir}{Directory where to output the pdf certificates, character.}
+
+\item{title}{Title for certificate.}
+
+\item{action_text}{Action text between name and workshop title.}
+
+\item{curriculum_title}{Header before curriculum content.}
+
+\item{logo}{Specify the logo to use for the watermark, as a path to a logo
+file or the name of a logo included in the package: either `"R"`
+(default), or `"Forwards"`.}
+
+\item{border_image}{Specify the image to use to create a border, as a path
+to an image file. Defaults are used for the included logos: plain blue for
+`logo = R` and a magma colour scale for `logo = "Forwards"`.}
 
 \item{papersize}{Option for LaTeX article class specifying paper size, e.g.
 `"a4paper"`, `"letterpaper"`.}
 
-\item{keep_tex}{Logical argument passed to rmarkdown::render}
+\item{keep_tex}{Logical argument passed to rmarkdown::render.}
 }
 \description{
 Create certificates for all attendees
@@ -37,19 +71,21 @@ Create certificates for all attendees
 \dontrun{
 # Fake names generated via charlatan::ch_name
 attendees <- c("Marnie Dickinson", "Dr. Marlin Wilderman")
+workshop <- "Package development workshop"
 date <- as.Date("2018-01-01")
 location <- "University of Lorraine"
-workshop <- "Package development workshop"
 curriculum <- system.file("rmarkdown", "templates",
 "workshop_certificate", "resources",
-"default_workshop_contents.md", package = "fwdbrand")
+"default_workshop_contents.md", package = "certificate")
 certifier <- "Zaire Crooks"
 credentials <- "Forwards teaching team member"
+organization <- "Forwards, the R Foundation taskforce for women and other
+under-represented groups"
+organization_url <- "forwards.github.io/"
 dir <- "certificates"
-create_workshop_certificates(date, location, workshop, curriculum,
- certifier,
-credentials,
-attendees,
-dir)
+create_workshop_certificates(attendees, workshop, date, location,
+                             curriculum, certifier, credentials,
+                             organization, organization_url,
+                             dir)
 }
 }
