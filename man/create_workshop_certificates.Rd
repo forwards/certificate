@@ -18,6 +18,8 @@ create_workshop_certificates(
   title = "CERTIFICATE OF COMPLETION",
   action_text = "participated in the",
   curriculum_title = "Workshop contents:",
+  signature = NULL,
+  signature_skip = -0.8,
   logo = "R",
   border_image = NULL,
   papersize = "a4paper",
@@ -51,11 +53,16 @@ create_workshop_certificates(
 
 \item{curriculum_title}{Header before curriculum content.}
 
-\item{logo}{Specify the logo to use for the watermark, as a path to a logo
+\item{signature}{The path to an image to use as a signature.}
+
+\item{signature_skip}{The space to skip between the signature image and the
+signature line (units: cm).}
+
+\item{logo}{The logo to use for the watermark, as a path to a logo
 file or the name of a logo included in the package: either `"R"`
 (default), or `"Forwards"`.}
 
-\item{border_image}{Specify the image to use to create a border, as a path
+\item{border_image}{Specify an image to use to create a border, as a path
 to an image file. Defaults are used for the included logos: plain blue for
 `logo = R` and a magma colour scale for `logo = "Forwards"`.}
 

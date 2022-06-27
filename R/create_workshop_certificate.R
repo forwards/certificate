@@ -13,10 +13,13 @@
 #' @param title Title for certificate.
 #' @param action_text Action text between name and workshop title.
 #' @param curriculum_title Header before curriculum content.
-#' @param logo Specify the logo to use for the watermark, as a path to a logo
+#' @param signature The path to an image to use as a signature.
+#' @param signature_skip The space to skip between the signature image and the
+#' signature line (units: cm).
+#' @param logo The logo to use for the watermark, as a path to a logo
 #' file or the name of a logo included in the package: either `"R"`
 #' (default), or `"Forwards"`.
-#' @param border_image Specify the image to use to create a border, as a path
+#' @param border_image Specify an image to use to create a border, as a path
 #' to an image file. Defaults are used for the included logos: plain blue for
 #' `logo = R` and a magma colour scale for `logo = "Forwards"`.
 #' @param papersize Option for LaTeX article class specifying paper size, e.g.
@@ -46,6 +49,7 @@
 #'                              organization, organization_url,
 #'                              dir)
 #' }
+#' @importFrom tools file_ext
 create_workshop_certificates <- function(attendees,
                                          workshop, date, location,
                                          curriculum, certifier, credentials,
@@ -54,6 +58,7 @@ create_workshop_certificates <- function(attendees,
                                          title = "CERTIFICATE OF COMPLETION",
                                          action_text = "participated in the",
                                          curriculum_title = "Workshop contents:",
+                                         signature = NULL, signature_skip = -0.8,
                                          logo = "R", border_image = NULL,
                                          papersize = "a4paper",
                                          keep_tex = FALSE){
@@ -88,6 +93,13 @@ create_workshop_certificates <- function(attendees,
         on.exit(file.remove(temp_border), add = TRUE)
     } else temp_border <- NULL
 
+    if (!is.null(signature)){
+        temp_signature <- file.path(dir,
+                                    paste0("signature.", file_ext(signature)))
+        file.copy(signature, temp_signature)
+        on.exit(file.remove(temp_signature), add = TRUE)
+    }
+
     purrr::walk2(attendees, 1:length(attendees),
                  create_workshop_certificate,
                  title = title,
@@ -98,6 +110,8 @@ create_workshop_certificates <- function(attendees,
                  certifier, credentials,
                  organization = organization,
                  organization_url = organization_url,
+                 signature = temp_signature,
+                 signature_skip = signature_skip,
                  border_image = temp_border,
                  papersize, dir,
                  keep_tex)
@@ -113,6 +127,8 @@ create_workshop_certificate <- function(attendee, number,
                                         certifier, credentials,
                                         organization = "R Contribution Working Group\n",
                                         organization_url = "contributor.r-project.org",
+                                        signature = NULL,
+                                        signature_skip = signature_skip,
                                         border_image = NULL,
                                         papersize = "a4paper", dir = ".",
                                         keep_tex = FALSE){
@@ -133,6 +149,8 @@ create_workshop_certificate <- function(attendee, number,
                                     credentials = credentials,
                                     organization = organization,
                                     organization_url = organization_url,
+                                    signature = signature,
+                                    signature_skip = signature_skip,
                                     border_image = border_image,
                                     papersize = papersize),
                       output_options = list(keep_tex = keep_tex),

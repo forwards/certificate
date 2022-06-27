@@ -54,6 +54,14 @@ params:
     label: Organization URL without https://
     value: forwards.github.io/
     input: text
+  signature:
+    label: Path to file containing image of signature
+    value: NULL
+    input: file
+  signature_skip:
+    label: Space to skip between signature image and signature line, in cm.
+    value: -0.8
+    input: numeric
   border_image:
     label: Path to file containing border image
     value: !r system.file("rmarkdown", "templates", "workshop_certificate", "resources", "default_workshop_contents.md", package = "certificate")
@@ -129,6 +137,14 @@ cat(readLines(params$curriculum), sep = "\n\n")
 \end{varwidth}
 
 \vfill
+
+
+```{r signature, results = 'asis'}
+if (!is.null(params$signature)){
+  cat("\\includegraphics[height=2\\baselineskip]{signature} \\vspace{", 
+      params$signature_skip, "cm}")
+}
+```
 
 \rule[0in]{3in}{1pt}\\
 \textbf{`r params$certifier`\\
