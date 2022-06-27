@@ -100,25 +100,26 @@ create_workshop_certificates <- function(attendees,
         on.exit(file.remove(temp_signature), add = TRUE)
     }
 
-    purrr::walk2(attendees, 1:length(attendees),
-                 create_workshop_certificate,
-                 title = title,
-                 action_text = action_text,
-                 workshop, date, location,
-                 curriculum_title = curriculum_title,
-                 curriculum,
-                 certifier, credentials,
-                 organization = organization,
-                 organization_url = organization_url,
-                 signature = temp_signature,
-                 signature_skip = signature_skip,
-                 border_image = temp_border,
-                 papersize, dir,
-                 keep_tex)
+    purrr::walk(attendees,
+                create_workshop_certificate,
+                title = title,
+                action_text = action_text,
+                workshop, date, location,
+                curriculum_title = curriculum_title,
+                curriculum,
+                certifier, credentials,
+                organization = organization,
+                organization_url = organization_url,
+                signature = temp_signature,
+                signature_skip = signature_skip,
+                border_image = temp_border,
+                papersize, dir,
+                keep_tex)
 }
 
 # https://tex.stackexchange.com/questions/346730/fancyhdr-package-not-working
-create_workshop_certificate <- function(attendee, number,
+#' @importFrom snakecase to_snake_case
+create_workshop_certificate <- function(attendee,
                                         title = "CERTIFICATE OF COMPLETION",
                                         action_text = "participated in the",
                                         workshop, date, location,
@@ -132,8 +133,9 @@ create_workshop_certificate <- function(attendee, number,
                                         border_image = NULL,
                                         papersize = "a4paper", dir = ".",
                                         keep_tex = FALSE){
-    i <- stringr::str_pad(number, 2, pad = "0")
-    output_file <- paste0(snakecase::to_snake_case(paste(workshop, i)), ".pdf")
+    output_file_name <- paste(to_snake_case(workshop), date,
+                              to_snake_case(attendee, sep_in = " "), sep = "_")
+    output_file <- paste0(output_file_name, ".pdf")
     rmarkdown::render(input = file.path(dir, "skeleton.Rmd"),
                       output_file = output_file,
                       output_dir = dir,
