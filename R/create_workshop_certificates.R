@@ -133,8 +133,8 @@ create_workshop_certificate <- function(attendee,
                                         border_image = NULL,
                                         papersize = "a4paper", dir = ".",
                                         keep_tex = FALSE){
-    output_file_name <- paste(to_snake_case(workshop), date,
-                              to_snake_case(attendee, sep_in = "[. ]"), sep = "_")
+    output_file_name <- to_snake_case(paste(workshop, date, attendee),
+                                      sep_in = "[. ]")
     output_file <- paste0(output_file_name, ".pdf")
     rmarkdown::render(input = file.path(dir, "skeleton.Rmd"),
                       output_file = output_file,
