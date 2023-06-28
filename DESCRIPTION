@@ -23,3 +23,5 @@ Suggests:
     covr,
     pdftools
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/forwards/certificate
+BugReports: https://github.com/forwards/certificate/issues
