@@ -59,15 +59,15 @@ create_workshop_certificates(
 signature line (units: cm).}
 
 \item{logo}{The logo to use for the watermark, as a path to a logo
-file or the name of a logo included in the package: either `"R"`
-(default), or `"Forwards"`.}
+file or the name of a logo included in the package: either \code{"R"}
+(default), or \code{"Forwards"}.}
 
 \item{border_image}{Specify an image to use to create a border, as a path
 to an image file. Defaults are used for the included logos: plain blue for
-`logo = R` and a magma colour scale for `logo = "Forwards"`.}
+\code{logo = R} and a magma colour scale for \code{logo = "Forwards"}.}
 
 \item{papersize}{Option for LaTeX article class specifying paper size, e.g.
-`"a4paper"`, `"letterpaper"`.}
+\code{"a4paper"}, \code{"letterpaper"}.}
 
 \item{keep_tex}{Logical argument passed to rmarkdown::render.}
 }

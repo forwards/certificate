@@ -11,7 +11,7 @@ Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 License: GPL-3 + file LICENSE
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 Imports: 
     snakecase,
     purrr,
@@ -22,3 +22,4 @@ Suggests:
     testthat,
     covr,
     pdftools
+Roxygen: list(markdown = TRUE)
