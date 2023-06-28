@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/forwards/certificate/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/forwards/certificate/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/forwards/certificate/branch/main/graph/badge.svg)](https://app.codecov.io/gh/forwards/certificate?branch=main)
 <!-- badges: end -->
 
 The **certificate** package is designed to help generate certificates
