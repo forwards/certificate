@@ -1,5 +1,3 @@
-context("test-create_workshop_certificates.R")
-
 test_that("create_workshop_certificates works", {
     skip_on_cran()
     attendees <- c("Marnie Dickinson", "Dr. Marlin Wilderman")
@@ -20,13 +18,13 @@ test_that("create_workshop_certificates works", {
                                  curriculum, certifier, credentials,
                                  organization, organization_url,
                                  dir)
-    nm <- c("package_development_workshop_marnie_dickinson",
-            "package_development_workshop_dr_marlin_wilderman")
-                 tolower
+    nm <- c("package_development_workshop_2018-01-01_marnie_dickinson",
+            "package_development_workshop_2018-01-01_dr_marlin_wilderman")
+
     expect_true(file.exists(file.path(dir, paste0(nm[1], ".pdf"))))
     expect_true(file.exists(file.path(dir, paste0(nm[2], ".pdf"))))
 
-    text <- pdftools::pdf_text(file.path(dir, paste0(nm[1], ".pdf"))))
+    text <- pdftools::pdf_text(file.path(dir, paste0(nm[1], ".pdf")))
     expect_true(grepl("Zaire Crooks", text))
     expect_true(grepl("CERTIFICATE OF COMPLETION", text))
     expect_true(grepl("University of Barcelona", text))
