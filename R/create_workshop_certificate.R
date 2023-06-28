@@ -98,7 +98,7 @@ create_workshop_certificates <- function(attendees,
                                     paste0("signature.", file_ext(signature)))
         file.copy(signature, temp_signature)
         on.exit(file.remove(temp_signature), add = TRUE)
-    }
+    } else temp_signature <- NULL
 
     purrr::walk(attendees,
                 create_workshop_certificate,

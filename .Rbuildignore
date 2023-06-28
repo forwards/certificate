@@ -7,3 +7,4 @@
 ^certificates$
 ^tools$
 ^codecov\.yml$
+^README\.Rmd$

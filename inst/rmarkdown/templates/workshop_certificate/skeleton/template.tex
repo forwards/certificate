@@ -42,6 +42,14 @@
 \usepackage{fancyhdr}
 \usepackage{varwidth}
 \usepackage{tcolorbox}
+% avoid warnings from legacy everypage package
+\newcommand*{\AddEverypageHook}[1]{%
+ \AddToHook{shipout/background}{\put(1in,-1in){#1}}}
+\newcommand*{\AddThispageHook}[1]{%
+ \AddToHookNext{shipout/background}{\put(1in,-1in){#1}}}
+\makeatletter
+\disable@package@load{everypage}{}
+\makeatother
 \usepackage{background}
 \tcbuselibrary{skins} % needed for border image (enhanced box type)
 \definecolor{Rblue}{HTML}{2369bd}
@@ -73,6 +81,8 @@
     \opensans $organization$: \href{https://$organization_url$}{\nolinkurl{$organization_url$}}}}% https:// in variable causes compilation issues
 
 \begin{document}
+
+\opensans
 
 $if(title)$
 \maketitle
