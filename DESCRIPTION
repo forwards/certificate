@@ -12,14 +12,11 @@ License: GPL-3 + file LICENSE
 URL: https://github.com/forwards/certificate,
     https://forwards.github.io/certificate/
 BugReports: https://github.com/forwards/certificate/issues
-Imports: 
-    lubridate,
+Imports:
     purrr,
     rmarkdown,
-    snakecase,
-    stringr
+    snakecase
 Suggests: 
-    covr,
     pdftools,
     testthat (>= 3.0.0)
 ByteCompile: true
